@@ -13,9 +13,9 @@ makeCacheMatrix <- function(x = matrix()) {
   inv <- NULL
   setMatrix <- function(y) {
     x <<- y
-    inv <<- NULL
+    inv <<- NULL ##each time the matrix is set, the cached inverse matrix becomes NULL
   }
-  getMatrix <- function() x
+  getMatrix <- function() x # return the current matrix
   setInverse <- function(solve) inv <<- solve  
   getInverse <- function() inv
   list(set = setMatrix, get = getMatrix,
@@ -27,13 +27,13 @@ makeCacheMatrix <- function(x = matrix()) {
 ##cacheSolve calculates the inverse of the special "matrix" created with the above function. 
 cacheSolve <- function(x, ...) {
   inv <- x$geti()
-  if(!is.null(inv)) {
+  if(!is.null(inv)) {  ## if the inverse is not NULL, skip the tedious computation
     message("getting cached the inverse matrix")
     return(inv)
   }
-  theMatrix <- x$get()
+  theMatrix <- x$get() #get the new/modified matrix
   inv <- solve(theMatrix, ...)  
-  x$seti(inv)
-  inv
+  x$seti(inv) 
+  inv # return the new inverse matrix
   
 }
