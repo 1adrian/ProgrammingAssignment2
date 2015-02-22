@@ -1,35 +1,39 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Here is a pair of functions that cache the inverse of a INVERTIBLE matrix
+## to test them you might use mym <- rbind(c(1, -1/4), c(-1/4, 1)), an invertible matrix
+##it is an adaptation of the "vector" example
+## presented at https://github.com/rdpeng/ProgrammingAssignment2
 
-## Write a short comment describing this function
+## makeCacheMatrix creates a special "mmatrix", a list containing a function to
+## set the value of the matrix
+## get the value of the matrix
+## set the value of the inverse matrix
+## get the value of the inverse matrix
 
-makeCacheMatrix2 <- function(x = matrix()) {
-  m <- NULL
-  set <- function(y) {
+makeCacheMatrix <- function(x = matrix()) {
+  inv <- NULL
+  setMatrix <- function(y) {
     x <<- y
-    m <<- NULL
+    inv <<- NULL
   }
-  get <- function() x
-  setm <- function(m) m <<- m
-  getm <- function() m
-  list(set = set, get = get,
-       setm = setm,
-       getm = getm)
+  getMatrix <- function() x
+  setInverse <- function(solve) inv <<- solve  
+  getInverse <- function() inv
+  list(set = setMatrix, get = getMatrix,
+       seti = setInverse,
+       geti = getInverse)
 }
 
 
-## Write a short comment describing this function
-
-cacheSolve2 <- function(x, ...) {
-  ## Return a matrix that is the inverse of 'x'
-  m <- x$getm()
-  if(!is.null(m)) {
-    message("getting cached data")
-    return(m)
+##cacheSolve calculates the inverse of the special "matrix" created with the above function. 
+cacheSolve <- function(x, ...) {
+  inv <- x$geti()
+  if(!is.null(inv)) {
+    message("getting cached the inverse matrix")
+    return(inv)
   }
-  data <- x$get()
-  m <- solve(data, ...)
-  x$setm(m)
-  m
+  theMatrix <- x$get()
+  inv <- solve(theMatrix, ...)  
+  x$seti(inv)
+  inv
   
 }
